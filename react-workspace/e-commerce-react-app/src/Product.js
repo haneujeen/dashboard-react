@@ -1,4 +1,5 @@
 import React from "react"
+import {ListItem, ListItemText, InputBase, Checkbox} from '@mui/material'
 
 class Product extends React.Component {
     constructor(props) {
@@ -7,19 +8,19 @@ class Product extends React.Component {
     }
 
     render() {
+        const product = this.state.product 
         return(
-            <div className="Product">
-                <input type="checkbox"
-                    id={this.state.product.id}
-                    name={this.state.product.title}
-                    checked="true"
-                />
-                <label id={this.state.product.id}>
-                    {this.state.product.title}, 
-                    {this.state.product.material}, 
-                    {this.state.product.price}
-                </label>
-            </div>
+            <ListItem>
+                <Checkbox checked={product.added}/>
+                <ListItemText>
+                    <InputBase inputProps={{"aria-label": "naked"}}
+                        type="text"
+                        id={product.id}
+                        name = {product.id}
+                        value = {product.title}
+                    />
+                </ListItemText>
+            </ListItem>
         )
     }
 }
