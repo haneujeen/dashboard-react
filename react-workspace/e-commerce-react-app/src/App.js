@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import Product from './Product';
-import { Paper, List } from '@mui/material';
+import { Paper, List, Container } from '@mui/material';
+import AddProduct from './AddProduct';
 
 class App extends React.Component {
     constructor(props) {
@@ -25,6 +26,20 @@ class App extends React.Component {
             ]
         }
     }
+
+    add = (product) => {
+        const {products} = this.state
+
+        product.id = products.length
+        product.material = ""
+        product.price = 0
+        product.checked = false
+
+        products.push(product)
+
+        this.setState({ products })
+        console.log(products) // log the updated products array
+    }
     
     render() {
         var products = this.state.products.length > 0 && (
@@ -39,7 +54,14 @@ class App extends React.Component {
 
         return (
             <div className="App">
-                {products}
+                <Container maxWidth='md'>
+                    <AddProduct add={this.add}/>
+                    <div>
+                        {products}
+                    </div>
+                    
+                </Container>
+                
             </div>
         );
     }
