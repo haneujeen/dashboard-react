@@ -11,7 +11,7 @@ class Product extends React.Component {
         const product = this.state.product 
         return(
             <ListItem>
-                <Checkbox checked={product.added}/>
+                <Checkbox checked={product.checked}/>
                 <ListItemText>
                     <InputBase inputProps={{"aria-label": "naked"}}
                         type="text"

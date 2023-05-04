@@ -13,14 +13,14 @@ class App extends React.Component {
                     title: "Product 1",
                     material: "Wood",
                     price: 1000.0,
-                    added: true
+                    checked: true
                 },
                 {
                     id: 1,
                     title: "Product 2",
                     material: "Metal",
                     price: 2000.0,
-                    added: false
+                    checked: false
                 }
             ]
         }
@@ -31,7 +31,7 @@ class App extends React.Component {
             <Paper style={{margin: 16}}>
                 <List>
                     {this.state.products.map(product => (
-                        <Product product={product} added={product.added}/>
+                        <Product product={product} checked={product.checked}/>
                     ))}
                 </List>
             </Paper>
