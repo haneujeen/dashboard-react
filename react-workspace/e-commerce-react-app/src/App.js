@@ -8,23 +8,20 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            products: [
-                {
-                    id: 0,
-                    title: "Product 1",
-                    material: "Wood",
-                    price: 1000.0,
-                    checked: true
-                },
-                {
-                    id: 1,
-                    title: "Product 2",
-                    material: "Metal",
-                    price: 2000.0,
-                    checked: false
-                }
-            ]
+            products: []
         }
+    }
+
+    componentDidMount() {
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        };
+
+        fetch('http://localhost:8080/api/product', requestOptions)
+            .then(response => response.json())
+            .then(data => this.setState({ products: data }))
+            .catch(error => console.log(error));
     }
 
     add = (product) => {
