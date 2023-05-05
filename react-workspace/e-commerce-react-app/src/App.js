@@ -40,13 +40,22 @@ class App extends React.Component {
         this.setState({ products })
         console.log(products) // log the updated products array
     }
+
+    remove = (id) => {
+        const { products } = this.state;
+        const updatedProducts = products.filter(product => product.id !== id);
+        this.setState({ products: updatedProducts });
+        console.log(updatedProducts); // log the updated products array
+    }
     
     render() {
         var products = this.state.products.length > 0 && (
             <Paper style={{margin: 16}}>
                 <List>
                     {this.state.products.map(product => (
-                        <Product product={product} checked={product.checked}/>
+                        <Product product={product} 
+                            checked={product.checked}
+                            remove={this.remove}/>
                     ))}
                 </List>
             </Paper>
@@ -58,10 +67,8 @@ class App extends React.Component {
                     <AddProduct add={this.add}/>
                     <div>
                         {products}
-                    </div>
-                    
+                    </div>   
                 </Container>
-                
             </div>
         );
     }
