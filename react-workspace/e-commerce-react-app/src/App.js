@@ -3,6 +3,7 @@ import './App.css';
 import Product from './Product';
 import { Paper, List, Container } from '@mui/material';
 import AddProduct from './AddProduct';
+import { call } from './api/ApiService';
 
 class App extends React.Component {
     constructor(props) {
@@ -13,36 +14,21 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        const requestOptions = {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
-        };
-
-        fetch('http://localhost:8080/api/product', requestOptions)
-            .then(response => response.json())
-            .then(data => this.setState({ products: data }))
-            .catch(error => console.log(error));
+        call("/api/product", "GET", null).then((response) =>
+            this.setState({ products: response.data })
+        )
     }
 
     add = (product) => {
-        const {products} = this.state
-
-        product.id = products.length
-        product.material = ""
-        product.price = 0
-        product.checked = false
-
-        products.push(product)
-
-        this.setState({ products })
-        console.log(products) // log the updated products array
+        call("/api/product", "POST", product).then((response) =>
+            this.setState({ products: response.data })
+        )
     }
 
-    remove = (id) => {
-        const { products } = this.state;
-        const updatedProducts = products.filter(product => product.id !== id);
-        this.setState({ products: updatedProducts });
-        console.log(updatedProducts); // log the updated products array
+    remove = (product) => {
+        call("/api/product", "DELETE", product).then((response) =>
+            this.setState({ products: response.data })
+        )
     }
     
     render() {
