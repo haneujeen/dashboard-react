@@ -14,6 +14,7 @@ class Product extends React.Component {
         super(props)
         const { product } = props
         this.state = { product, readOnly: true }
+        this.update = props.update
     }
 
     handleRemove = () => {
@@ -22,8 +23,9 @@ class Product extends React.Component {
     }
 
     handleClick = () => {
-        this.setState({ readOnly: false })
-        console.log('ListItemText clicked, readOnly set to', this.state.readOnly)
+        this.setState({ readOnly: false }, () => {
+            console.log('ListItemText clicked, readOnly set to', this.state.readOnly)
+        })
     }
 
     handleEdit = (event) => {
@@ -36,17 +38,22 @@ class Product extends React.Component {
     handleSave = (event) => {
         if (event.key === 'Enter') {
             this.setState({ readOnly: true })
+            // Call the 'update' method passed in props with the updated product object
+            this.update(this.state.product)
         }
     }
 
     handleCheck = (event) => {
         const { product } = this.state
         product.checked = !product.checked
-        this.setState({ product })
+        this.setState({ product: product })
+
+        // Call the 'update' method passed in props with the updated product object
+        this.update(product)
     }
 
     render() {
-        const { product } = this.props
+        const { product } = this.state
         return(
             <ListItem>
                 <Checkbox checked={product.checked}

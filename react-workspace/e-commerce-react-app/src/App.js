@@ -30,15 +30,22 @@ class App extends React.Component {
             this.setState({ products: response.data })
         )
     }
+
+    update = (product) => {
+        call("/api/product", "PUT", product).then((response) =>
+            this.setState({ products: response.data })
+        )
+    }
     
     render() {
         var products = this.state.products.length > 0 && (
             <Paper style={{margin: 16}}>
                 <List>
                     {this.state.products.map(product => (
-                        <Product product={product} 
+                        <Product key={product.id} product={product} 
                             checked={product.checked}
-                            remove={this.remove}/>
+                            remove={this.remove}
+                            update={this.update}/>
                     ))}
                 </List>
             </Paper>
