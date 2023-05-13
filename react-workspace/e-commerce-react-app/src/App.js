@@ -4,6 +4,8 @@ import Product from './Product';
 import { Paper, List, Container } from '@mui/material';
 import AddProduct from './AddProduct';
 import { call } from './api/ApiService';
+import ProductTable from './ProductTable';
+import AddProductForm from './AddProductForm';
 
 class App extends React.Component {
     constructor(props) {
@@ -58,6 +60,8 @@ class App extends React.Component {
                     <div>
                         {products}
                     </div>   
+                    <ProductTable products={this.state.products} remove={this.remove}/>
+                    <AddProductForm add={this.props.add} />
                 </Container>
             </div>
         );

@@ -45,7 +45,8 @@ class AddProduct extends React.Component {
                         fullWidth 
                         color='secondary' 
                         variant='outlined'
-                        onClick={this.onButtonClick}>
+                        onClick={this.onButtonClick}
+                        style={{ height: '100%' }}>
                             +
                     </Button>
                 </Grid>
