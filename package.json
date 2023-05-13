@@ -9,6 +9,7 @@
   "author": "han eujeen",
   "license": "ISC",
   "dependencies": {
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "react-router-dom": "^6.11.1"
   }
 }
