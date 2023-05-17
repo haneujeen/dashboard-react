@@ -13,12 +13,20 @@ export function call(api, method, request) {
         options.body = JSON.stringify(request)
     }
 
-    return fetch(options.url, options).then((response) =>
-        response.json().then((json) => {
-            if (!response.ok) {
-                return Promise.reject(json)
-            }
-            return json
-        })
-    )
+    return fetch(options.url, options)
+    .then((response) => {
+        if (!response.ok) {
+            return Promise.reject(response);
+        }
+        return response.json();
+    })
+    .catch((error) => {
+        console.error('Authentication error: 403 Forbidden');
+        if (error.status === 403) {
+            window.location.href = '/login'; // Will use navigate instead of window.location.href
+        } else {
+            console.error(error);
+        }
+        return Promise.reject(error);
+    });
 }
