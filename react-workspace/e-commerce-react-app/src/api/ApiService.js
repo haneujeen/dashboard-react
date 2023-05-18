@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "./appConfig";
+const AUTH_TOKEN = localStorage.getItem('AUTH_TOKEN');
 
 export function call(api, method, request) {
     let options = {
@@ -7,6 +8,10 @@ export function call(api, method, request) {
         }),
         url: API_BASE_URL + api,
         method: method,
+    }
+    
+    if (AUTH_TOKEN ) {
+        options.headers.append("Authorization", `Bearer ${AUTH_TOKEN}`)
     }
 
     if (request) {
@@ -34,8 +39,19 @@ export function call(api, method, request) {
 export function signin(userDTO) {
     return call("/users/signin", "POST", userDTO)
         .then((response) => {
-            console.log('Response:', response)
-            alert('Authentication Token: ' + response.token)
-            window.location.href = "/"
+            if (response.token) {
+                localStorage.setItem('AUTH_TOKEN', response.token);
+                window.location.href="/"
+            }
     })
+}
+
+export function signup(userDTO) {
+    return call("/users/signup", "POST", userDTO)
+        
+}
+
+export function signout() {
+    localStorage.removeItem(AUTH_TOKEN)
+    window.location.href = '/login'
 }

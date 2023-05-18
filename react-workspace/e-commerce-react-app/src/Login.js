@@ -1,5 +1,6 @@
 import React from 'react';
 import { signin } from './api/ApiService';
+import { Link } from 'react-router-dom';
 import { Button, TextField, Grid, Typography, Container } from '@mui/material';
 
 class Login extends React.Component {
@@ -17,7 +18,7 @@ class Login extends React.Component {
             <Container component="main" maxWidth="xs" style={{ marginTop: '8%' }}>
                 <Grid container spacing={2} direction="column">
                     <Grid item>
-                        <Typography component="h1" variant="h5" style={{ marginBottom: '10px' }}>
+                        <Typography component="h1" variant="h5" style={{ marginBottom: '15px' }} align="center">
                             Login
                         </Typography>
                     </Grid>
@@ -48,9 +49,17 @@ class Login extends React.Component {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                    <Button type="submit" variant="contained" color="primary" fullWidth>
-                        Login
-                    </Button>
+                        <Button type="submit" variant="contained" color="primary" fullWidth>
+                            Login
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <Typography component="div" variant="body2" align="center">
+                            Don't have an account?{' '}
+                            <Link to="/signup" variant="body2">
+                                Sign Up
+                            </Link>
+                        </Typography>
                     </Grid>
                 </Grid>
                 </form>

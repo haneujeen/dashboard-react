@@ -1,9 +1,18 @@
 import React from 'react';
 import './App.css';
 import Product from './Product';
-import { Paper, List, Container } from '@mui/material';
+import { 
+    AppBar,
+    Toolbar,
+    Grid,
+    Typography,
+    Button,
+    Paper, 
+    List, 
+    Container
+} from '@mui/material';
 import AddProduct from './AddProduct';
-import { call } from './api/ApiService';
+import { call, signout } from './api/ApiService';
 import ProductTable from './ProductTable';
 import AddProductForm from './AddProductForm';
 
@@ -11,13 +20,14 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoading: true,
             products: []
         }
     }
 
     componentDidMount() {
         call("/api/product", "GET", null).then((response) =>
-            this.setState({ products: response.data })
+            this.setState({ products: response.data, isLoading: false })
         )
     }
 
@@ -38,8 +48,29 @@ class App extends React.Component {
             this.setState({ products: response.data })
         )
     }
+
+    handleSignOut = () => {
+        signout();
+    }
     
     render() {
+        const navigationBar = (
+            <AppBar position="static">
+                <Toolbar>
+                    <Grid container alignItems="center" justifyContent="space-between">
+                    <Grid item>
+                        <Typography variant="h6">Home Essentials</Typography>
+                    </Grid>
+                    <Grid item>
+                        <Button color="inherit" onClick={this.handleSignOut}>
+                        Sign Out
+                        </Button>
+                    </Grid>
+                    </Grid>
+                </Toolbar>
+                </AppBar>
+        );
+
         var products = this.state.products.length > 0 && (
             <Paper style={{margin: 16}}>
                 <List>
@@ -53,8 +84,9 @@ class App extends React.Component {
             </Paper>
         )
 
-        return (
-            <div className="App">
+        const productPage = (
+            <div>
+                {navigationBar}
                 <Container maxWidth='md'>
                     <AddProduct add={this.add}/>
                     <div>
@@ -63,6 +95,14 @@ class App extends React.Component {
                     <ProductTable products={this.state.products} remove={this.remove}/>
                     <AddProductForm add={this.props.add} />
                 </Container>
+            </div>
+        );
+        
+        const loadingPage = <h1>Loading...</h1>;
+
+        return (
+            <div className="App">
+                {this.state.isLoading ? loadingPage : productPage}
             </div>
         );
     }
