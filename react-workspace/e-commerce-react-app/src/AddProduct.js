@@ -33,7 +33,7 @@ class AddProduct extends React.Component {
             <Grid container>
                 <Grid xs={11} md={11} item style={{ paddingRight: 16 }}>
                     <TextField 
-                        placeholder="Add Product" 
+                        placeholder="Add Product Title" 
                         fullWidth
                         onChange={this.onInputChange}
                         value={this.state.product.title}
@@ -43,8 +43,8 @@ class AddProduct extends React.Component {
                 <Grid xs={1} md={1} item>
                     <Button 
                         fullWidth 
-                        color='secondary' 
-                        variant='outlined'
+                        color='primary' 
+                        variant='contained'
                         onClick={this.onButtonClick}
                         style={{ height: '100%' }}>
                             +

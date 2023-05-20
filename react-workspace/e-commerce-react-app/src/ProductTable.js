@@ -1,5 +1,24 @@
 import React from 'react';
-import { TableRow, TableCell, Button } from '@mui/material';
+import {
+    Table, 
+    Typography, 
+    TableHead, 
+    TableRow, 
+    TableCell, 
+    TableBody, 
+    Button,
+    createTheme, 
+    ThemeProvider,
+    Paper,
+    Grid
+} from '@mui/material';
+import { red } from '@mui/material/colors';
+
+const theme = createTheme({
+    palette: {
+        primary: red,
+    },
+});
 
 const ProductTable = ({ products, remove }) => {
     const rows = products.map((product) => (
@@ -9,29 +28,40 @@ const ProductTable = ({ products, remove }) => {
         <TableCell>{product.material}</TableCell>
         <TableCell>{product.price}</TableCell>
         <TableCell>
-            <Button variant="outlined" color="secondary" onClick={() => remove(product)}>
-            Delete
+            <ThemeProvider theme={theme}>
+            <Button
+                variant="outlined"
+                color="primary"
+                size="small"
+                onClick={() => remove(product)}
+            >
+                Delete
             </Button>
+            </ThemeProvider>
         </TableCell>
         </TableRow>
     ));
 
     return (
-        <div className="product-table">
-        <table>
-            <caption>Product List</caption>
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Material</th>
-                <th>Price</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>{rows}</tbody>
-        </table>
-        </div>
+        <Paper style={{ margin: 16, padding: 16 }}>
+            <Typography variant="h6" gutterBottom>
+                Product Table
+            </Typography>
+            <Grid container>
+                <Table>
+                    <TableHead>
+                    <TableRow>
+                        <TableCell>ID</TableCell>
+                        <TableCell>Title</TableCell>
+                        <TableCell>Material</TableCell>
+                        <TableCell>Price</TableCell>
+                        <TableCell>Action</TableCell>
+                    </TableRow>
+                    </TableHead>
+                    <TableBody>{rows}</TableBody>
+                </Table>
+            </Grid>
+        </Paper>
     );
 };
 

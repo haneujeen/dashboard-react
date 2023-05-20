@@ -5,21 +5,19 @@ import { signup } from './api/ApiService';
 
 class Signup extends React.Component {
     handleSignup = (event) => {
-        event.preventDefault(); // Prevent form submission
-        const formData = new FormData(event.target);
-        const username = formData.get('username');
-        const email = formData.get('email');
-        const password = formData.get('password');
+        event.preventDefault()
+        const formData = new FormData(event.target)
+        const username = formData.get('username')
+        const email = formData.get('email')
+        const password = formData.get('password')
 
         signup({ username, email, password })
-            .then(() => {
-                console.log('Signup successful');
-                // Optionally, redirect to another page or perform additional actions
-                // In this project, it's already redirecting to the login page in the signup function after a successful signup
+            .then((response) => {
+                console.log('Signup successful')
+                window.location.href = "/login"
             })
             .catch((error) => {
                 console.error('Signup error:', error);
-                // Handle signup error, e.g., display error message to the user
             });
     }
 

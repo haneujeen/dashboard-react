@@ -48,7 +48,6 @@ export function signin(userDTO) {
 
 export function signup(userDTO) {
     return call("/users/signup", "POST", userDTO)
-        
 }
 
 export function signout() {
