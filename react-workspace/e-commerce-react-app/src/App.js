@@ -15,97 +15,111 @@ import AddProduct from './AddProduct';
 import { call, signout } from './api/ApiService';
 import ProductTable from './ProductTable';
 import AddProductForm from './AddProductForm';
+import SearchProductForm from './SearchProductForm';
+import EditProductForm from './EditProductForm';
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLoading: true,
-            products: []
-        }
-    }
+function App() {
+    const [loading, setLoading] = useState(true);
+    const [products, setProducts] = useState([]);
 
-    componentDidMount() {
-        call("/api/product", "GET", null).then((response) =>
-            this.setState({ products: response.data, isLoading: false })
-        )
-    }
+    useEffect(() => {
+        call("/api/product", "GET", null).then((response) => {
+            setProducts(response.data);
+            setLoading(false);
+        });
+    }, []); // This runs only once after the initial render
 
-    add = (product) => {
+    const add = (product) => {
         call("/api/product", "POST", product).then((response) =>
-            this.setState({ products: response.data })
-        )
-    }
-
-    remove = (product) => {
-        call("/api/product", "DELETE", product).then((response) =>
-            this.setState({ products: response.data })
-        )
-    }
-
-    update = (product) => {
-        call("/api/product", "PUT", product).then((response) =>
-            this.setState({ products: response.data })
-        )
-    }
-
-    handleSignOut = () => {
-        signout();
-    }
-    
-    render() {
-        const navigationBar = (
-            <AppBar position="static">
-                <Toolbar>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                    <Grid item>
-                        <Typography variant="h6">Home Essentials</Typography>
-                    </Grid>
-                    <Grid item>
-                        <Button color="inherit" onClick={this.handleSignOut}>
-                        Sign Out
-                        </Button>
-                    </Grid>
-                    </Grid>
-                </Toolbar>
-                </AppBar>
+            setProducts(response.data)
         );
+    };
 
-        var products = this.state.products.length > 0 && (
-            <Paper style={{margin: 16}}>
-                <List>
-                    {this.state.products.map(product => (
-                        <Product key={product.id} product={product} 
-                            checked={product.checked}
-                            remove={this.remove}
-                            update={this.update}/>
-                    ))}
-                </List>
-            </Paper>
-        )
+    const update = (product) => {
+            console.log("Updating product: ", product);
+            call("/api/product", "PUT", product).then((response) =>
+                setProducts(response.data)
+            );
+        };
 
-        const productPage = (
-            <div>
-                {navigationBar}
-                <Container maxWidth='md'>
-                    <AddProduct add={this.add}/>
-                    <div>
-                        {products}
-                    </div>   
-                    <ProductTable products={this.state.products} remove={this.remove}/>
-                    <AddProductForm add={this.props.add} />
-                </Container>
-            </div>
+    const remove = (product) => {
+        call("/api/product", "DELETE", product).then((response) => {
+            setProducts(response.data);
         );
-        
-        const loadingPage = <h1>Loading...</h1>;
+    };
 
-        return (
-            <div className="App">
-                {this.state.isLoading ? loadingPage : productPage}
-            </div>
-        );
+    // navbar stuff
+    const [tab, setTab] = useState(0);
+
+    // search something stuff
+    const search = (title, material, price, company) => {
+        return products.filter((product) => {
+            return (
+                (!title || product.title.toLowerCase().includes(title.toLowerCase())) &&
+                (!material || product.material.toLowerCase().includes(material.toLowerCase())) &&
+                (!price || product.price === price) &&
+                (!company || product.company.toLowerCase().includes(company.toLowerCase()))
+            );
+        });
+    };
+
+    // only updates the UI and doesn't involve any server-side operations
+    const onCheck = (id, checked) => {
+        setProducts(products.map((product) => {
+            if (product.id === id) {
+                return { ...product, checked };
+            }
+            return product;
+        }));
+    };
+
+    // render loading
+    if (loading) {
+        return <div>Loading...</div>;
     }
+
+    return (
+        <div>
+            <NavigationBar setTab={setTab} />
+            {
+                tab === 0 && <AddByTitle add={add} /> // Add with text field
+            }
+            {
+                tab === 1 && <AddProduct add={add} /> // Add with a form
+            }
+            {
+                tab === 2 &&
+                <SearchProduct
+                    search={search}
+                    products={products}
+                    onCheck={onCheck}
+                    onRemove={remove}
+                    onUpdate={update}
+                />
+            }
+            {
+                tab === 3 &&
+                <SearchEditProduct
+                    search={search}
+                    products={products}
+                    onCheck={onCheck}
+                    onRemove={remove}
+                    onUpdate={update}
+                />
+            }
+            {
+                tab === 4 &&
+                <SearchDeleteProduct
+                    search={search}
+                        products={products}
+                        onCheck={onCheck}
+                        onRemove={remove}
+                        onUpdate={update}
+                />
+            }
+            <ProductList products={products} remove={remove} update={update} /> // This list will be default and be displayed under all components
+        </div>
+    )
 }
 
 export default App;
