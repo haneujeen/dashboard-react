@@ -1,25 +1,27 @@
 import React, { useState } from 'react';
 import { TextField, Button, Grid, Paper, Typography } from '@mui/material';
 
-const AddProductForm = ({ add }) => {
+function AddProduct({ add }) {
     const [title, setTitle] = useState('');
     const [material, setMaterial] = useState('');
     const [price, setPrice] = useState('');
-    const [userId, setUserId] = useState('');
+    const [company, setCompany] = useState('');
+    const [username, setUsername] = useState('');
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const newProduct = {
-        title: title,
-        material: material,
-        price: price,
-        userId: userId
+        const product = {
+            title: title,
+            material: material,
+            price: price,
+            company: company,
+            username: ''
         };
-        add(newProduct);
+        add(product);
         setTitle('');
         setMaterial('');
         setPrice('');
-        setUserId('');
+        setUsername('');
     };
 
     return (
@@ -60,9 +62,9 @@ const AddProductForm = ({ add }) => {
                 <Grid item xs={12} sm={6}>
                     <TextField
                         required
-                        label="User ID"
-                        value={userId}
-                        onChange={(event) => setUserId(event.target.value)}
+                        label="Company"
+                        value={company}
+                        onChange={(event) => setCompany(event.target.value)}
                         fullWidth
                     />
                 </Grid>
@@ -77,4 +79,4 @@ const AddProductForm = ({ add }) => {
     );
 };
 
-export default AddProductForm;
+export default AddProduct;
